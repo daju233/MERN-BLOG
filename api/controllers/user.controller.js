@@ -3,3 +3,7 @@ export const test = (req, res) => {
     message: "userApi is working" + ` req's method is ${req.method}`,
   });
 };
+
+export const updateUser = (req, res) => {
+  console.log(req.user);
+};
