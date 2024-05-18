@@ -10,7 +10,8 @@ export const test = (req, res) => {
 
 export const updateUser = async (req, res, next) => {
   if (req.user.userid !== req.params.userId) {
-    return next(errorHandler(403, "用户id不符合"));
+    // console.log(req.user.userid, req.params.userId + "123");
+    return next(errorHandler(403, "权限不足"));
   }
   if (req.body.password) {
     if (req.body.password.length < 6) {
@@ -40,5 +41,17 @@ export const updateUser = async (req, res, next) => {
     res.status(200).json(rest);
   } catch (err) {
     next(err);
+  }
+};
+
+export const deleteUser = async (req, res, next) => {
+  if (req.user.userid !== req.params.userId) {
+    return next(errorHandler(403, "权限不足"));
+  }
+  try {
+    await User.findByIdAndDelete(req.params.userId);
+    res.status(200).json("User has been deleted");
+  } catch (error) {
+    next(error);
   }
 };
