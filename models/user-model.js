@@ -20,7 +20,12 @@ const userSchema = new mongoose.Schema(
       default:
         "https://cdn.dribbble.com/users/77628/screenshots/14247360/media/2b5be3f5db32c1dbfd5702da8af2f247.jpg",
     },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
   },
+
   { timestamps: true }
 );
 

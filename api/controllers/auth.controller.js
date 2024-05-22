@@ -34,6 +34,15 @@ export const signup = async (req, res, next) => {
   }
 };
 
+export const jwttest = (req, res, next) => {
+  const tokentest =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyaWQiOiI2NjRhMTVmM2I0NTBjODc3MmQ0YWVkMmYiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNzE2MTMyMTkwfQ.sxNnZ3VpkgOFSBQvyHIzRjCN47jPqJl9VZ2rlargmCM";
+  const decoded = jwt.decode(tokentest, { complete: true }); // 解码JWT，包括未验证的签名
+  // const payload2 = decoded.payload; // 获取有效载荷 Does'twork why?
+  // console.log(decoded); // 打印有效载荷
+  next();
+};
+
 export const signin = async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -52,7 +61,10 @@ export const signin = async (req, res, next) => {
     if (!validPassword) {
       return next(errorHandler(400, "密码错误"));
     }
-    const token = jwt.sign({ userid: validUser._id }, process.env.JWT_SECRET);
+    const token = jwt.sign(
+      { userid: validUser._id, isAdmin: validUser.isAdmin },
+      process.env.JWT_SECRET
+    );
 
     const { password: _pass, ...rest } = validUser._doc;
     res
@@ -72,7 +84,10 @@ export const google = async (req, res, next) => {
   try {
     const user = await User.findOne({ email });
     if (user) {
-      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      const token = jwt.sign(
+        { id: user._id, isAdmin: user.isAdmin },
+        process.env.JWT_SECRET
+      );
       const { password, ...rest } = user._doc;
       res
         .status(200)
@@ -90,7 +105,10 @@ export const google = async (req, res, next) => {
         profileImage: googlePhotoUrl,
       });
       await newUser.save();
-      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+      const token = jwt.sign(
+        { id: newUser._id, isAdmin: newUser.isAdmin },
+        process.env.JWT_SECRET
+      );
       const { password, ...rest } = newUser.doc;
       res
         .status(200)
