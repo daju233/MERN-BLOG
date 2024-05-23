@@ -21,7 +21,7 @@ const postSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      default: "uncategorized",
+      default: "随记",
     },
     slug: {
       type: String,

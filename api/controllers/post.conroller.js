@@ -9,11 +9,7 @@ export const createPost = async (req, res, next) => {
   if (!req.body.title || !req.body.content) {
     return next(errorHandler(400, "请填充所有字段"));
   }
-  const slug = req.body.title
-    .split(" ")
-    .join("-")
-    .toLowerCase()
-    .replace(/[^a-zA-Z0-9-]/g, "-");
+  const slug = req.body.title.split(" ").join("-").toLowerCase();
   const newPost = new Post({ ...req.body, slug, userId: req.user.userid });
 
   try {
