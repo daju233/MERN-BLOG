@@ -1,6 +1,18 @@
 import Post from "../../models/post-model.js";
 import { errorHandler } from "../utils/error.js";
 
+export const deletePost = async (req, res, next) => {
+  if (!req.user.isAdmin) {
+    return next(errorHandler(403, "你不被允许删除帖子"));
+  }
+  try {
+    await Post.findByIdAndDelete(req.params.postId);
+    res.status(200).json("删除成功");
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const createPost = async (req, res, next) => {
   //   console.log(req.user);
   if (!req.user.isAdmin) {
