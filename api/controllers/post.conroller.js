@@ -1,6 +1,29 @@
 import Post from "../../models/post-model.js";
 import { errorHandler } from "../utils/error.js";
 
+export const updatePost = async (req, res, next) => {
+  if (!req.user.isAdmin || req.user.userid !== req.params.userId) {
+    return next(errorHandler(403, "你不被允许更新帖子"));
+  }
+  try {
+    await Post.findByIdAndUpdate(
+      req.params.postId,
+      {
+        $set: {
+          title: req.body.title,
+          content: req.body.content,
+          category: req.body.category,
+          image: req.body.image,
+        },
+      },
+      { new: true }
+    );
+    res.status(200).json("更新成功");
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const deletePost = async (req, res, next) => {
   if (!req.user.isAdmin) {
     return next(errorHandler(403, "你不被允许删除帖子"));
@@ -34,14 +57,15 @@ export const createPost = async (req, res, next) => {
 
 export const getPosts = async (req, res, next) => {
   try {
+    // console.log(req.query);
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 9;
     const sortDirection = req.query.sortDirection === "asc" ? 1 : -1;
     const posts = await Post.find({
       ...(req.query.userId && { userId: req.query.userId }),
-      ...(req.query.category && { userId: req.query.category }),
-      ...(req.query.slug && { userId: req.query.slug }),
-      ...(req.query.postId && { userId: req.query.postId }),
+      ...(req.query.category && { category: req.query.category }),
+      ...(req.query.slug && { slug: req.query.slug }),
+      ...(req.query.postId && { _id: req.query.postId }),
       ...(req.query.searchTerm && {
         $or: [
           { title: { $regex: req.query.searchTerm, $option: "i" } },
