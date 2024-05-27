@@ -57,7 +57,7 @@ export const createPost = async (req, res, next) => {
 
 export const getPosts = async (req, res, next) => {
   try {
-    // console.log(req.query);
+    console.log(req.query);
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 9;
     const sortDirection = req.query.sortDirection === "asc" ? 1 : -1;
@@ -68,12 +68,12 @@ export const getPosts = async (req, res, next) => {
       ...(req.query.postId && { _id: req.query.postId }),
       ...(req.query.searchTerm && {
         $or: [
-          { title: { $regex: req.query.searchTerm, $option: "i" } },
-          { content: { $regex: req.query.searchTerm, $option: "i" } },
+          { title: new RegExp(req.query.searchTerm, "i") },
+          { content: new RegExp(req.query.searchTerm, "i") },
         ],
       }),
     })
-      .sort({ updateAt: sortDirection })
+      .sort({ createdAt: sortDirection })
       .skip(startIndex)
       .limit(limit);
     const totalPosts = await Post.countDocuments();
