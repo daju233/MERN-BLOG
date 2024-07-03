@@ -57,7 +57,7 @@ export const createPost = async (req, res, next) => {
 
 export const getPosts = async (req, res, next) => {
   try {
-    console.log(req.query);
+    // console.log(req.query);
     const startIndex = parseInt(req.query.startIndex) || 0;
     const limit = parseInt(req.query.limit) || 9;
     const sortDirection = req.query.sortDirection === "asc" ? 1 : -1;
