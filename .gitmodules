@@ -1,0 +1,3 @@
+[submodule "MERN-BLOG-FrontEnd"]
+	path = MERN-BLOG-FrontEnd
+	url = https://github.com/daju233/MERN-BLOG-FrontEnd.git
