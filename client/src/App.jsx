@@ -15,15 +15,17 @@ import CreatePost from "./pages/CreatePost";
 import UpdatePost from "./pages/UpdatePost";
 import PostPage from "./pages/PostPage";
 import Search from "./pages/Search";
+import Games from "./pages/Games";
 
 function App() {
   return (
-    <>
+    <div className="">
       <BrowserRouter>
         <Header />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
+          <Route path="/games" element={<Games />} />
           <Route path="/sign-in" element={<Signin />} />
           <Route path="/sign-up" element={<Signup />} />
           <Route path="/search" element={<Search />} />
@@ -40,7 +42,7 @@ function App() {
         </Routes>
         <FooterCom />
       </BrowserRouter>
-    </>
+    </div>
   );
 }
 

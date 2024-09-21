@@ -155,6 +155,9 @@ export default function Header() {
         <Navbar.Link active={path === "/links"} as={"div"}>
           <Link to="/links">友链</Link>
         </Navbar.Link>
+        <Navbar.Link active={path === "/games"} as={"div"}>
+          <Link to="/games">游戏</Link>
+        </Navbar.Link>
       </Navbar.Collapse>
     </Navbar>
   );

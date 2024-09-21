@@ -8,6 +8,7 @@ import {
   signout,
 } from "../api/controllers/user.controller.js";
 import { verifyToken } from "../api/utils/verifyUser.js";
+import cors from "cors";
 
 const router = express.Router();
 
@@ -17,5 +18,4 @@ router.delete("/delete/:userId", verifyToken, deleteUser);
 router.post("/signout", signout);
 router.get("/getusers", verifyToken, getUsers);
 router.get("/:userId", getUser);
-
 export default router;
